@@ -17,7 +17,13 @@ const server = http.createServer((req, res) => {
         res.end('This is the product page');
 
     } else if (pathName === '/api') {
+        fs.readFile('./dev-data/data.json', 'utf-8', (err, data) => {
+            const productData = JSON.parse(data);
+            res.writeHead(200, { 'Content-type': 'application/json' });
+            res.end(JSON.stringify(productData));
+        });
 
+        //res.end('API');
     }
     else {
         res.writeHead(404, {
