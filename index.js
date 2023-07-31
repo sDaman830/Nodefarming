@@ -24,6 +24,7 @@ const data = fs.readFileSync('./dev-data/data.json', 'utf-8', (err, data) => {
 
 });
 const tempOverview = fs.readFileSync(`/Users/damanpreetsinghghatoura/Desktop/Nodefarming/templates/template-overview.html`, `utf-8`);
+
 const tempcard = fs.readFileSync(`/Users/damanpreetsinghghatoura/Desktop/Nodefarming/templates/template-overview.html`, `utf-8`);
 const tempProduct = fs.readFileSync(`/Users/damanpreetsinghghatoura/Desktop/Nodefarming/templates/template-product.html`, `utf-8`);
 const dataObj = JSON.parse(data);
@@ -31,11 +32,12 @@ const server = http.createServer((req, res) => {
     console.log(req.url);
     const pathName = req.url;
     // res.end('Hello from the server');
-    if (pathName === '/' || pathName === '/overview ') {
+    if (pathName === '/' || pathName === '/overview') {
         res.writeHead(200, { 'Content-type': 'text/html' });
-        const cardsHtml = dataObj.map(el => replateTemplate(tempcard, el))
-        console.log(cardsHtml);
-        res.end(tempOverview);
+        const cardsHtml = dataObj.map(el => replateTemplate(tempcard, el)).join('');
+        const output = tempOverview.replace('{%PRODUCT_CARD%}', cardsHtml);
+        console.log(tempOverview);
+        res.end(output);
 
     } else if (pathName === '/product') {
         res.end('This is the product page');
