@@ -14,6 +14,10 @@ server.on('request', (req, res) => {
     readable.on('end', () => {
         res.end();//signifies no more data will be written to this stream
     })
+    readable.on('error', err => {
+        res.statusCode(500)
+        res.end("File not found")
+    })
 });
 
 server.listen(8000, "127.0.0.1", () => {
